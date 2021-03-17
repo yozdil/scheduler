@@ -1,14 +1,13 @@
-export function getAppointmentsForDay(state, day) {
-  const appsForDay = [];
+export default function getAppointmentsForDay(state, day) {
+  const app = [];
 
-  //... returns an array of appointments for that day
-  const filteredDays = state.days.filter((dayObj) => {
+  state.days.forEach((dayObj) => {
     if (dayObj.name === day) {
       dayObj.appointments.forEach((appId) => {
-        appsForDay.push(state.appointments[appId]);
+        app.push(state.appointments[appId]);
       });
     }
   });
 
-  return appsForDay;
+  return app;
 }

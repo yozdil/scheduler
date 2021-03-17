@@ -10,18 +10,17 @@ import DayList from "./DayList";
 import Appointment from "./Appointment";
 
 export default function Application(props) {
+  const setDay = (day) => setState({ ...state, day });
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    // you may put the line below, but will have to remove/comment hardcoded appointments variable
     appointments: {},
   });
 
-  useEffect(() => {
-    axios.get(`/api/days`).then((res) => setDays(res.data));
-  }, [days]);
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
 
-  const appointmentList = appointments.map((appointment) => (
+  const appointmentList = dailyAppointments.map((appointment) => (
     <Appointment
       key={appointment.id}
       id={appointment.id}
@@ -30,6 +29,22 @@ export default function Application(props) {
     />
   ));
 
+  useEffect(() => {
+    Promise.all([
+      Promise.resolve(axios.get(`http://localhost:8001/api/days`)),
+      Promise.resolve(axios.get(`http://localhost:8001/api/appointments`)),
+      Promise.resolve(axios.get(`http://localhost:8001/api/interviewers`)),
+    ]).then((all) => {
+      setState((prev) => ({
+        ...prev,
+        days: all[0].data,
+        appointments: all[1].data,
+        interviewers: all[2].data,
+      }));
+    });
+  }, []);
+
+  
   return (
     <main className="layout">
       <section className="sidebar">
@@ -40,7 +55,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList days={state.days} setDays={setDays} />
+          <DayList day={state.day} days={state.days} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
