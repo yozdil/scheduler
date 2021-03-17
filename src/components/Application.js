@@ -1,81 +1,25 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+// axios
+import axios from "axios";
+// Styles
 import "components/Application.scss";
-
+// Selectors
+import getAppointmentsForDay from "../helpers/selectors";
+// Components
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
-
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      },
-    },
-  },
-  {
-    id: 3,
-    time: "2pm",
-  },
-  {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Yam Atkins",
-      interviewer: {
-        id: 5,
-        name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg",
-      },
-    },
-  },
-  {
-    id: 5,
-    time: "4pm",
-    interview: {
-      student: "Kevin Nicolas",
-      interviewer: {
-        id: 3,
-        name: "Mildred Nazir",
-        avatar: "https://i.imgur.com/T2WwVfS.png",
-      },
-    },
-  },
-  {
-    id: 6,
-    time: "5pm",
-  },
-];
-
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    // you may put the line below, but will have to remove/comment hardcoded appointments variable
+    appointments: {},
+  });
+
+  useEffect(() => {
+    axios.get(`/api/days`).then((res) => setDays(res.data));
+  }, [days]);
 
   const appointmentList = appointments.map((appointment) => (
     <Appointment
@@ -96,7 +40,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList days={days} day={day} setDay={setDay} />
+          <DayList days={state.days} setDays={setDays} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
