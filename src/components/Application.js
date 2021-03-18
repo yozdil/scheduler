@@ -4,7 +4,7 @@ import axios from "axios";
 // Styles
 import "components/Application.scss";
 // Selectors
-import getAppointmentsForDay from "../helpers/selectors";
+import { getAppointmentsForDay, getInterview , getInterviewersForDay} from "../helpers/selectors";
 // Components
 import DayList from "./DayList";
 import Appointment from "./Appointment";
@@ -18,16 +18,22 @@ export default function Application(props) {
     appointments: {},
   });
 
+  const dailyInterviewers = getInterviewersForDay(state, state.day);
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
-  const appointmentList = dailyAppointments.map((appointment) => (
-    <Appointment
-      key={appointment.id}
-      id={appointment.id}
-      time={appointment.time}
-      interview={appointment.interview}
-    />
-  ));
+  const appointmentList = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+        interviewers={dailyInterviewers}
+      />
+    );
+  });
 
   useEffect(() => {
     Promise.all([
@@ -44,7 +50,6 @@ export default function Application(props) {
     });
   }, []);
 
-  
   return (
     <main className="layout">
       <section className="sidebar">
