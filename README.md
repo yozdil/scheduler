@@ -4,11 +4,19 @@
 Yamac Ozdil
 
 ## About
+This week at [Lighthouse Labs](https://www.lighthouselabs.ca/) we got our hands dirty with React.js, Jest, Cypress.io, Storybook, Heroku, CircleCi and Netlify.
+
 Interview Scheduler lets a user (student) to book an interview with an interviewer by adding their name to scheduling component and easily selecting the interviewer.
 
 The user can edit or delete an existing interview as well as track the available spots remaining on the left-hand sidebar.
 
+<kbd><img src="./docs/int-s.gif" /></kbd>
+
 ## See for your self
+
+1. Let's start with a GET request to https://s-int.herokuapp.com/api/days
+2. Time for a cup of tea as we wait for Heroku to warm up..
+3. Visit https://int-s.netlify.app/ and enjoy!
 
 ## Local Setup
 
