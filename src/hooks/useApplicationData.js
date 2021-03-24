@@ -26,20 +26,18 @@ export default function useApplicationData() {
     });
   }, []);
 
-  const remSpots = (increment) => {
-    let dayIndex;
-    const day = {
-      ...state.days.find((value, index) => {
-        dayIndex = index;
-        return (value.name = state.day);
-      }),
-    };
-
-    increment ? day.spots++ : day.spots--;
-
-    const days = [...state.days];
-    days[dayIndex] = day;
-    return days;
+  function remSpots(appointments) {
+    return state.days.map((day) => {
+      const maxAppointments = day.appointments.length;
+      const copyDay = { ...day };
+      copyDay.spots = day.appointments.reduce((acc, curr) => {
+        if (appointments[curr].interview) {
+          return acc - 1;
+        }
+        return acc;
+      }, maxAppointments);
+      return copyDay;
+    });
   }
   
 
@@ -57,7 +55,7 @@ export default function useApplicationData() {
       setState({
         ...state,
         appointments,
-        days: remSpots(false),
+        days: remSpots(appointments),
       });
     });
   }
@@ -75,7 +73,7 @@ export default function useApplicationData() {
       setState({
         ...state,
         appointments,
-        days: remSpots(true),
+        days: remSpots(appointments),
       });
     });
   }

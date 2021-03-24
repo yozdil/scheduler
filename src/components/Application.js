@@ -56,7 +56,6 @@ export default function Application(props) {
             days={state.days}
             setDay={setDay}
             appointments={state.appointments}
-            spots={remSpots}
           />
         </nav>
         <img
