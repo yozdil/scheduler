@@ -20,6 +20,7 @@ export default function Application(props) {
     setDay,
     bookInterview,
     cancelInterview,
+    remSpots,
   } = useApplicationData();
 
   const interviewers = getInterviewersForDay(state, state.day);
@@ -55,6 +56,7 @@ export default function Application(props) {
             days={state.days}
             setDay={setDay}
             appointments={state.appointments}
+            spots={remSpots}
           />
         </nav>
         <img
