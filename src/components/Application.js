@@ -62,6 +62,7 @@ export default function Application(props) {
           src="images/lhl.png"
           alt="Lighthouse Labs"
         />
+        <p className="sidebar__lhl sidebar--centered author"> by Yamac Ozdil</p>
       </section>
       <section className="schedule">
         {appointments}
